@@ -1,6 +1,5 @@
 --- 
 - hosts: all
-  remote_user: root
   # global roles
   roles:
   - selinux
@@ -12,7 +11,6 @@
 # per-host actions
 # install nginx on host1 and place sample app on it
 - hosts: host1
-  remote_user: root
   tasks:
   - name: install nginx
     yum: pkg=nginx state=latest
@@ -28,7 +26,6 @@
 
 # install tomcat on host2
 - hosts: host2
-  remote_user: root
   vars:
    # these vars are for tomcat role
    http_port: 8080
