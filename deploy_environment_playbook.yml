@@ -20,7 +20,7 @@
 
   - name: place sample app into nginx www root
     copy:
-     src: sample.war
+     src: files/sample.war
      dest: /usr/share/nginx/html/sample.war
      mode: 0644
 
