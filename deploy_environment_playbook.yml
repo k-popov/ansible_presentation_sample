@@ -1,0 +1,63 @@
+--- 
+- hosts: all
+  remote_user: root
+  # global roles
+  roles:
+  - selinux
+  # global tasks
+  tasks:
+  - name: install tmux
+    yum: pkg=tmux state=latest
+
+# per-host actions
+# install nginx on host1 and place sample app on it
+- hosts: host1
+  remote_user: root
+  tasks:
+  - name: install nginx
+    yum: pkg=nginx state=latest
+
+  - name: enable nginx at boot and start it
+    service: name=nginx enabled=yes state=started
+
+  - name: place sample app into nginx www root
+    copy:
+     src: sample.war
+     dest: /usr/share/nginx/html/sample.war
+     mode: 0644
+
+# install tomcat on host2
+- hosts: host2
+  remote_user: root
+  vars:
+   # these vars are for tomcat role
+   http_port: 8080
+   https_port: 8443
+   admin_username: admin
+   admin_password: adminsecret
+  roles:
+  - tomcat
+  tasks:
+  - name: stop tomcat server
+    service: name=tomcat state=stopped
+
+  - name: remove all pre-distributed apps
+    shell: "rm -rf /usr/share/tomcat/webapps/*"
+
+  - name: get sample application into tomcat pickup dir
+    get_url:
+     dest: /usr/share/tomcat/webapps/ROOT.war
+     url: "http://{{ hostvars['host1']['ansible_eth1']['ipv4']['address'] }}/sample.war"
+
+  - name: set permissions for the sample application artifact
+    file:
+     path: /usr/share/tomcat/webapps/ROOT.war
+     owner: tomcat
+     group: tomcat
+     mode: 0644
+
+  - name: start tomcat after sample deployment
+    service: name=tomcat state=restarted
+
+  - name: wait for tomcat to start
+    wait_for: port={{http_port}}
