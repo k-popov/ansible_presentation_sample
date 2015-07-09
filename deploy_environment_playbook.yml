@@ -61,7 +61,7 @@
   - name: wait for tomcat to start
     wait_for: port={{http_port}}
 
-- hosts:host1
+- hosts: host1
   tasks:
   - name: get a page from host2 into local nginx web root
     get_url:
