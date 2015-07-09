@@ -1,7 +1,5 @@
 --- 
 - hosts: all
-  vars:
-   nginx_root_dir: /usr/share/nginx/html/
   # global roles
   roles:
   - selinux
