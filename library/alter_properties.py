@@ -12,12 +12,12 @@ properties = None # the passed JSON with properties
 def module_exit(success=True, msg="No message provided"):
     if success:
         result_json = {
-            "failed": True,
+            "changed" : True,
             "msg": msg,
         }
     else:
         result_json = {
-            "changed" : True,
+            "failed": True,
             "msg": msg,
         }
     print json.dumps(result_json)
