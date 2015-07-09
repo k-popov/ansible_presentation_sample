@@ -36,7 +36,7 @@ for arg in arguments:
     if key == "file":
         target_file = value
     elif key == "props":
-        properties = json.loads(value)
+        properties = value
 
 if not (properties and target_file):
     module_exit(False, "Both file and props must be provided")
