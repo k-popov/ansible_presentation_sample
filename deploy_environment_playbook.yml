@@ -1,5 +1,7 @@
 --- 
 - hosts: all
+  vars:
+   nginx_root_dir: /usr/share/nginx/html/
   # global roles
   roles:
   - selinux
@@ -21,7 +23,7 @@
   - name: place sample app into nginx www root
     copy:
      src: files/sample.war
-     dest: /usr/share/nginx/html/sample.war
+     dest: "{{nginx_root_dir}}/sample.war"
      mode: 0644
 
 # install tomcat on host2
@@ -58,3 +60,13 @@
 
   - name: wait for tomcat to start
     wait_for: port={{http_port}}
+
+- hosts:host1
+  tasks:
+  - name: get a page from host2 into local nginx web root
+    get_url:
+     dest: "{{nginx_root_dir}}/main.html"
+     url: "http://{{ hostvars['host2']['ansible_eth1']['ipv4']['address'] }}/"
+
+  - name: check if file has been downloaded
+    wait_for: path="{{nginx_root_dir}}/main.html" state=present
