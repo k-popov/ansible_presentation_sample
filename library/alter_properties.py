@@ -42,7 +42,7 @@ if not (properties and target_file):
     module_exit(False, "Both file and props must be provided")
 
 with open(target_file, 'r') as props_file:
-    source_lines = props_file.read_lines()
+    source_lines = props_file.readlines()
 
 source_lines = [x for x in source_lines if "=" in x] # filter out non-propertie
 source_properties = {}
