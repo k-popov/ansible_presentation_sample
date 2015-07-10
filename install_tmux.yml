@@ -1,0 +1,9 @@
+--- 
+- hosts: all
+  vars:
+   pkg_name: "tmux"
+  roles:
+  - selinux
+  tasks:
+  - name: install tmux
+    yum: pkg="{{pkg_name}}" state=latest
