@@ -64,6 +64,7 @@
   - name: get a page from host2 into local nginx web root
     get_url:
      dest: "{{nginx_root_dir}}/main.html"
+     timeout: 30
      url: "http://{{ hostvars['host2']['ansible_eth1']['ipv4']['address'] }}:8080/"
 
   - name: check if file has been downloaded
