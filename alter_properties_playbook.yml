@@ -1,0 +1,15 @@
+--- 
+- hosts: host1
+  tasks:
+  - name: create test properties file
+    copy:
+     dest: "/tmp/test.properties"
+     owner: "vagrant"
+     mode: "u=rw,g=rw,o=rw"
+     content: "var1=val1\n\nvar2=val2\n"
+  - name: alter test properties
+    alter_properties:
+     file: "/tmp/test.properties"
+     props:
+      var3: val3
+      var1: OVERRIDE
