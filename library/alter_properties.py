@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 
-import sys
-import json
-import os
-
 from ansible.module_utils.basic import *
 
 # using ansible module class to manage all the parameters stuff
